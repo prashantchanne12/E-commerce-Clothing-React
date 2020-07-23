@@ -21,3 +21,4 @@ const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
 );
 
 export default withRouter(MenuItem); // Higher Order Component
+// Higher Order Component is function that takes another component as an argument and transforms it into another component and returns that transformed component whoch has access to history, match, location.

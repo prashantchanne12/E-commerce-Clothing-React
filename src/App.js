@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import './App.css';
 import { HomePage } from './pages/hompage/homepage.jsx';
+import ShopPage from './pages/shop/shop.jsx'
 
 function App() {
   return (
@@ -12,17 +13,12 @@ function App() {
     <div>
       <Switch>
         <Route exact path='/' component={HomePage} />
-        <Route exact path='/hats' component={HatsPage} />
+        <Route exact path='/shop' component={ShopPage} />
       </Switch>
     </div>
   );
 }
 
-const HatsPage = () => (
-  <div>
-    <h1> HATS PAGE </h1>
-  </div>
-);
 
 
 export default App;
