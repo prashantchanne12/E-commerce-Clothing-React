@@ -1,0 +1,14 @@
+.sign-in {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    padding-top: 10px;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
