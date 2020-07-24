@@ -1,6 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/user-actions.js';
+
 import './App.css';
 import { HomePage } from './pages/hompage/homepage.jsx';
 import ShopPage from './pages/shop/shop.jsx'
@@ -10,32 +13,26 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.js";
 
 
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null,
-    }
-  }
 
   unSubscribedFromAuth = null;
 
   componentDidMount() {
+
+    const { setCurrentUser } = this.props;
+
     this.unSubscribedFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapshot => {
-          this.setState({
-            currentUser: {
-              id: snapshot.id,
-              ...snapshot.data()
-            }
+          setCurrentUser({
+            id: snapshot.id,
+            ...snapshot.data()
           });
         });
 
       } else {
-        this.setState({ currentUser: userAuth });
+        setCurrentUser(userAuth);
       }
     });
   }
@@ -48,7 +45,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
@@ -59,6 +56,14 @@ class App extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
 
 
-export default App;
+// how reducer and root reducer get the user object is handled by redux internally, it is not something we can observe from our side, redux structure all this together without us seeing it
+
+// actually saying how user reducer and root reducer get the object is a bit misleading, it is actually all reducers that will receive the action object, root reducer job simply structure all(you can combine partially) reducer together
+
