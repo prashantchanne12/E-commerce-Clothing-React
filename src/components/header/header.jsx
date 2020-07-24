@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 // Connect is a Higher Order Component (HOC) that lets us modify our component to have access to things related to redux
 // HOC are the functions that takes components are the arguments and returns you a souped up component
 import "./header.scss";
+import CartIcon from "../cart-icon/cart-icon";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import { auth } from "../../firebase/firebase.js";
@@ -28,6 +29,7 @@ const Header = ({ currentUser }) => (
           SIGN IN
         </Link>
       )}
+      <CartIcon />
     </div>
   </div>
 );
