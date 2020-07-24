@@ -13,6 +13,35 @@ const config = {
     measurementId: "G-R3B0X48PB1"
 };
 
+export const createUserProfileDocument = async (userAuth, dName) => {
+
+    if (!userAuth) return;
+
+    const displayName = dName ? dName : userAuth.displayName;
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+    const snapshot = await userRef.get();
+
+    if (!snapshot.exists) {
+
+        const user = {
+            displayName: displayName,
+            email: userAuth.email,
+            createdAt: new Date(),
+        }
+
+        await userRef.set(user).then(e => {
+            console.log('Added');
+        }).catch(e => {
+            console.log('Error: ', e);
+        });
+
+
+    }
+
+    return userRef;
+
+}
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
