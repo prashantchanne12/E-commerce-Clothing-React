@@ -3,6 +3,7 @@
 
 // action - object which contains 'type' and 'payload'
 
+// import UserActionTypes from './user-actions.js';
 
 const INIT_STATE = {
     currentUser: null
