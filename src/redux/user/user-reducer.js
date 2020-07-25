@@ -14,7 +14,7 @@ const UserReducer = (state = INIT_STATE, action) => {
         case 'SET_CURRENT_USER': {
             return {
                 ...state,
-                currentUser: action.payload, // modify this value and return new object so React can detec changes
+                currentUser: action.payload, // modify this value and return new object so React can detect changes
             }
         }
 
