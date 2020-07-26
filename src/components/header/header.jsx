@@ -1,5 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+
+import { selectCartHidden } from "../../redux/cart/cart-selectors.js";
+import { selectCurrentUser } from "../../redux/user/user-selector.js";
 // Connect is a Higher Order Component (HOC) that lets us modify our component to have access to things related to redux
 // HOC are the functions that takes components are the arguments and returns you a souped up component
 import "./header.scss";
@@ -38,10 +42,14 @@ const Header = ({ currentUser, hidden }) => (
 );
 
 // 'state' is the top level 'Root Reducer'
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
-  hidden: state.cart.hidden,
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
 });
+// const mapStateToProps = (state) => ({
+//   currentUser: selectCurrentUser(state),
+//   hidden: selectCartHidden(state),
+// });
 
 export default connect(mapStateToProps)(Header);
 
