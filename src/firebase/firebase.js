@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import collection from '../pages/collection/collection';
 
 const config = {
     apiKey: "AIzaSyBYLvvtHJ_DKoOmoqEjPEGo4yd1cm9-EnI",
@@ -42,6 +43,8 @@ export const createUserProfileDocument = async (userAuth, dName) => {
 
 }
 
+
+
 export const addCollectionsAndDocuments = async (collectionKey, objectsToAdd) => {
     const collectionRef = firestore.collection(collectionKey);
 
@@ -56,6 +59,29 @@ export const addCollectionsAndDocuments = async (collectionKey, objectsToAdd) =>
 
     return await batch.commit();
 
+}
+
+export const convetCollectionSnapshotToMap = (collections) => {
+    const transformedCollection = collections.docs.map(
+        doc => {
+            // doc.data() - { title:'', items:[{},{}] }
+
+            const { title, items } = doc.data();
+
+            return {
+                routeName: encodeURI(title.toLowerCase()),
+                id: doc.id,
+                title: title,
+                items: items,
+            }
+        }
+    );
+    // console.log(transformedCollection);
+
+    return transformedCollection.reduce((accumulator, collection) => {
+        accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator;
+    }, {});
 }
 
 
