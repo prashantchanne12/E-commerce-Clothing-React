@@ -12,7 +12,10 @@ import Header from './components/header/header.jsx';
 import SignInAndSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.jsx';
 import CheckoutPage from './pages/checkout/checkout.jsx';
 
-import { auth, createUserProfileDocument } from "./firebase/firebase.js";
+import { auth, createUserProfileDocument, addCollectionsAndDocuments } from "./firebase/firebase.js";
+
+import { selectCollectionsPreview } from './redux/shop/shop-selectors';
+import collection from './pages/collection/collection.jsx';
 
 
 class App extends React.Component {
@@ -21,7 +24,9 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, collectionsArray } = this.props;
+
+    // console.log(collectionsArray);
 
     this.unSubscribedFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -34,9 +39,10 @@ class App extends React.Component {
           });
         });
 
-      } else {
-        setCurrentUser(userAuth);
       }
+      setCurrentUser(userAuth);
+      // addCollectionsAndDocuments('collection', collectionsArray.map(({ title, items }) => ({ title, items })));
+
     });
   }
 
@@ -67,6 +73,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
+  collectionsArray: selectCollectionsPreview(state),
 })
 
 const mapDispatchToProps = dispatch => ({

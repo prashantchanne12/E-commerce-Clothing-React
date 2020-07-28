@@ -42,6 +42,23 @@ export const createUserProfileDocument = async (userAuth, dName) => {
 
 }
 
+export const addCollectionsAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+
+    // batch is similar to transaction ins SQL if one query in transaction is failed then whole transaction is failed
+    // Makes our code more consistant
+    const batch = firestore.batch();
+
+    objectsToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, obj);
+    });
+
+    return await batch.commit();
+
+}
+
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
