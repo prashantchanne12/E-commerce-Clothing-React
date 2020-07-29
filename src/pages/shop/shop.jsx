@@ -29,14 +29,18 @@ class ShopPage extends React.Component {
 
     const collectionRef = firestore.collection("collection");
 
-    this.unsubscribeFromSnapshot = collectionRef.onSnapshot(
-      async (snapshot) => {
-        const collectionsMap = convetCollectionSnapshotToMap(snapshot);
-        console.log("Dispatch Fired");
-        updateCollections(collectionsMap);
-        this.setState({ loading: false });
-      }
-    );
+    // fetch(
+    //   "https://firestore.googleapis.com/v1/projects/clothing-e-commerce-6758e/databases/(default)/documents/collection"
+    // )
+    //   .then((response) => response.json())
+    //   .then((collections) => console.log(collections));
+
+    collectionRef.get().then((snapshot) => {
+      const collectionsMap = convetCollectionSnapshotToMap(snapshot);
+      console.log("Dispatch Fired");
+      updateCollections(collectionsMap);
+      this.setState({ loading: false });
+    });
   }
 
   render() {
