@@ -14,8 +14,6 @@ import CheckoutPage from './pages/checkout/checkout.jsx';
 
 import { auth, createUserProfileDocument } from "./firebase/firebase.js";
 
-import { selectCollectionsPreview } from './redux/shop/shop-selectors';
-import collection from './pages/collection/collection.jsx';
 
 
 class App extends React.Component {
