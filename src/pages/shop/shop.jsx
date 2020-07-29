@@ -5,47 +5,32 @@ import CollectionsOverview from "../../components/collections-overview/collectio
 import CollectionPage from "../collection/collection.jsx";
 
 import { connect } from "react-redux";
-import { updateCollections } from "../../redux/shop/shop-actions";
-import WithSpinner from "../../components/spinner/spinner";
-
+import { fetchCollectionsStartAsync } from "../../redux/shop/shop-actions";
 import {
-  firestore,
-  convetCollectionSnapshotToMap,
-} from "../../firebase/firebase";
+  selectIsCollectionFetching,
+  isCollectionLoaded,
+} from "../../redux/shop/shop-selectors";
+
+import WithSpinner from "../../components/spinner/spinner";
 
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 class ShopPage extends React.Component {
-  // constructor and super call setup will handle by react in backend
-  state = {
-    loading: true,
-  };
-
   unsubscribeFromSnapshot = null;
 
   componentDidMount() {
-    const { updateCollections } = this.props;
-
-    const collectionRef = firestore.collection("collection");
-
+    const { fetchCollectionsStartAsync } = this.props;
+    fetchCollectionsStartAsync();
     // fetch(
-    //   "https://firestore.googleapis.com/v1/projects/clothing-e-commerce-6758e/databases/(default)/documents/collection"
+    //   "https://firestore.googleapis.com/v1/projects/clothing-e-commerce-6758e/databases/(default)/documents/collection "
     // )
     //   .then((response) => response.json())
     //   .then((collections) => console.log(collections));
-
-    collectionRef.get().then((snapshot) => {
-      const collectionsMap = convetCollectionSnapshotToMap(snapshot);
-      console.log("Dispatch Fired");
-      updateCollections(collectionsMap);
-      this.setState({ loading: false });
-    });
   }
 
   render() {
-    const { match } = this.props;
-    const { loading } = this.state;
+    const { match, isFetching, isCollectionLoaded } = this.props;
 
     return (
       <div className="shop-page">
@@ -53,13 +38,16 @@ class ShopPage extends React.Component {
           exact
           path={`${match.path}`}
           render={(props) => (
-            <CollectionsOverviewWithSpinner isLoading={loading} {...props} />
+            <CollectionsOverviewWithSpinner isLoading={isFetching} {...props} />
           )}
         />
         <Route
           path={`${match.path}/:collectionId`}
           render={(props) => (
-            <CollectionPageWithSpinner isLoading={loading} {...props} />
+            <CollectionPageWithSpinner
+              isLoading={!isCollectionLoaded}
+              {...props}
+            />
           )}
         />
       </div>
@@ -69,12 +57,16 @@ class ShopPage extends React.Component {
 
 // props in render - are the parameters that our components are going to recieve ex. history, match etc.
 
-const mapDispatchToProps = (dispatch) => ({
-  updateCollections: (collectionsMap) =>
-    dispatch(updateCollections(collectionsMap)),
+const mapStateToProps = (state) => ({
+  isFetching: selectIsCollectionFetching(state),
+  isCollectionLoaded: isCollectionLoaded(state),
 });
 
-export default connect(null, mapDispatchToProps)(ShopPage);
+const mapDispatchToProps = (dispatch) => ({
+  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
 
 // the point of using an HOC is to abstract common functionality to a separate component so that we can re-use it and not repeat ourselves.
 
