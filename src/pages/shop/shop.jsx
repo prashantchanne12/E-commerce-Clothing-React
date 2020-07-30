@@ -5,16 +5,14 @@ import CollectionsOverviewContainer from "../../components/collections-overview/
 import CollectionContainer from "../collection/collection-container";
 
 import { connect } from "react-redux";
-import { fetchCollectionsStartAsync } from "../../redux/shop/shop-actions";
-
-
+import { fetchCollectionsStart } from "../../redux/shop/shop-actions";
 
 class ShopPage extends React.Component {
   unsubscribeFromSnapshot = null;
 
   componentDidMount() {
-    const { fetchCollectionsStartAsync } = this.props;
-    fetchCollectionsStartAsync();
+    const { fetchCollectionsStart } = this.props;
+    fetchCollectionsStart();
     // fetch(
     //   "https://firestore.googleapis.com/v1/projects/clothing-e-commerce-6758e/databases/(default)/documents/collection "
     // )
@@ -44,7 +42,7 @@ class ShopPage extends React.Component {
 // props in render - are the parameters that our components are going to recieve ex. history, match etc.
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);

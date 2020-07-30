@@ -12,40 +12,10 @@ import Header from './components/header/header.jsx';
 import SignInAndSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.jsx';
 import CheckoutPage from './pages/checkout/checkout.jsx';
 
-import { auth, createUserProfileDocument } from "./firebase/firebase.js";
-
 
 
 class App extends React.Component {
 
-  unSubscribedFromAuth = null;
-
-  componentDidMount() {
-
-    const { setCurrentUser } = this.props;
-
-
-    this.unSubscribedFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapshot => {
-          setCurrentUser({
-            id: snapshot.id,
-            ...snapshot.data()
-          });
-        });
-
-      }
-      setCurrentUser(userAuth);
-      // addCollectionsAndDocuments('collection', collectionsArray.map(({ title, items }) => ({ title, items })));
-
-    });
-  }
-
-  componentWillUnmount() {
-    this.unSubscribedFromAuth();
-  }
 
 
   render() {
@@ -72,11 +42,8 @@ const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
 })
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, null)(App);
 
 
 // how reducer and root reducer get the user object is handled by redux internally, it is not something we can observe from our side, redux structure all this together without us seeing it

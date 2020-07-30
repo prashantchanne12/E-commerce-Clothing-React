@@ -1,5 +1,6 @@
 import { firestore, convetCollectionSnapshotToMap } from '../../firebase/firebase';
 
+// ACTION OBJECT
 export const fetchCollectionsStart = () => ({
     type: 'FETCH_COLLECTION_START',
 });
@@ -14,6 +15,8 @@ export const fetchCollectionsFailure = (errorMessage) => ({
     payload: errorMessage,
 });
 
+
+// ACTION FUNCTION
 export const fetchCollectionsStartAsync = () => {
     return (dispatch) => {
 

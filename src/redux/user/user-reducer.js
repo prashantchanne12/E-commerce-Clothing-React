@@ -6,15 +6,25 @@
 // import UserActionTypes from './user-actions.js';
 
 const INIT_STATE = {
-    currentUser: null
+    currentUser: null,
+    error: null
 }
 
 const UserReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case 'SET_CURRENT_USER': {
+        case 'SIGNIN_SUCCESS': {
             return {
                 ...state,
                 currentUser: action.payload, // modify this value and return new object so React can detect changes
+                error: null,
+            }
+        }
+
+        case 'SIGNIN_FAILURE': {
+            return {
+                ...state,
+                error: action.payload,
+
             }
         }
 
