@@ -1,20 +1,13 @@
 import React from "react";
 import { Route } from "react-router-dom";
 
-import CollectionsOverview from "../../components/collections-overview/collection-overview.jsx";
-import CollectionPage from "../collection/collection.jsx";
+import CollectionsOverviewContainer from "../../components/collections-overview/collections-overview-container";
+import CollectionContainer from "../collection/collection-container";
 
 import { connect } from "react-redux";
 import { fetchCollectionsStartAsync } from "../../redux/shop/shop-actions";
-import {
-  selectIsCollectionFetching,
-  isCollectionLoaded,
-} from "../../redux/shop/shop-selectors";
 
-import WithSpinner from "../../components/spinner/spinner";
 
-const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
-const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 class ShopPage extends React.Component {
   unsubscribeFromSnapshot = null;
@@ -30,25 +23,18 @@ class ShopPage extends React.Component {
   }
 
   render() {
-    const { match, isFetching, isCollectionLoaded } = this.props;
+    const { match } = this.props;
 
     return (
       <div className="shop-page">
         <Route
           exact
           path={`${match.path}`}
-          render={(props) => (
-            <CollectionsOverviewWithSpinner isLoading={isFetching} {...props} />
-          )}
+          component={CollectionsOverviewContainer}
         />
         <Route
           path={`${match.path}/:collectionId`}
-          render={(props) => (
-            <CollectionPageWithSpinner
-              isLoading={!isCollectionLoaded}
-              {...props}
-            />
-          )}
+          component={CollectionContainer}
         />
       </div>
     );
@@ -57,16 +43,11 @@ class ShopPage extends React.Component {
 
 // props in render - are the parameters that our components are going to recieve ex. history, match etc.
 
-const mapStateToProps = (state) => ({
-  isFetching: selectIsCollectionFetching(state),
-  isCollectionLoaded: isCollectionLoaded(state),
-});
-
 const mapDispatchToProps = (dispatch) => ({
   fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
+export default connect(null, mapDispatchToProps)(ShopPage);
 
 // the point of using an HOC is to abstract common functionality to a separate component so that we can re-use it and not repeat ourselves.
 
