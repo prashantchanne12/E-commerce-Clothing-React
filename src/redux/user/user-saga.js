@@ -7,11 +7,11 @@
 // EMAIL_SIGNIN_FAILURE
 
 import { takeLatest, put, all, call } from 'redux-saga/effects';
-import { auth, googleProvider, createUserProfileDocument } from '../../firebase/firebase';
+import { auth, googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase';
 
 import { signInSuccess, signInFailure } from './user-actions'
 
-export function* getSnapshotFromGoogleAuth(user) {
+export function* getSnapshotFromUserAuth(user) {
     try {
         const userRef = yield call(createUserProfileDocument, user);
         const userSnapshot = yield userRef.get();
@@ -25,7 +25,7 @@ export function* getSnapshotFromGoogleAuth(user) {
 export function* signInWithGoogle() {
     try {
         const { user } = yield auth.signInWithPopup(googleProvider);
-        yield getSnapshotFromGoogleAuth(user);
+        yield getSnapshotFromUserAuth(user);
 
     } catch (error) {
         yield put(signInFailure(error.message));
@@ -35,7 +35,18 @@ export function* signInWithGoogle() {
 export function* signInWithEmail({ payload: { email, password } }) {
     try {
         const { user } = yield auth.signInWithEmailAndPassword(email, password);
-        yield getSnapshotFromGoogleAuth(user);
+        yield getSnapshotFromUserAuth(user);
+
+    } catch (error) {
+        yield put(signInFailure(error.message));
+    }
+}
+
+export function* isUserAuthenticated() {
+    try {
+        const user = yield getCurrentUser();
+        if (!user) return;
+        yield getSnapshotFromUserAuth(user);
 
     } catch (error) {
         put(signInFailure(error.message));
@@ -51,11 +62,16 @@ export function* onEmailSignInStart() {
     yield takeLatest('EMAIL_SIGNIN_START', signInWithEmail);
 }
 
+export function* onCheckUserSession() {
+    yield takeLatest('CHECK_USER_SESSION', isUserAuthenticated);
+}
+
 export function* userSagas() {
     yield all(
         [
             call(onGoogleSignInStart),
-            call(onEmailSignInStart)
+            call(onEmailSignInStart),
+            call(onCheckUserSession),
         ]
     )
 }

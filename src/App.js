@@ -2,8 +2,8 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { setCurrentUser } from './redux/user/user-actions.js';
-import { selectCurrentUser } from './redux/user/user-selector.js';
+import { checkUserSession } from './redux/user/user-actions';
+import { selectCurrentUser } from './redux/user/user-selector';
 
 import './App.css';
 import { HomePage } from './pages/hompage/homepage.jsx';
@@ -13,10 +13,12 @@ import SignInAndSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.jsx';
 import CheckoutPage from './pages/checkout/checkout.jsx';
 
 
-
 class App extends React.Component {
 
-
+  componentDidMount() {
+    const { checkUserSession } = this.props;
+    checkUserSession();
+  }
 
   render() {
     return (
@@ -40,10 +42,14 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
-})
+});
+
+const mapDispacthToProps = dispatch => ({
+  checkUserSession: () => dispatch(checkUserSession())
+});
 
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, mapDispacthToProps)(App);
 
 
 // how reducer and root reducer get the user object is handled by redux internally, it is not something we can observe from our side, redux structure all this together without us seeing it
