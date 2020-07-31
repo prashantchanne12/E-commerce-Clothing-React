@@ -2,7 +2,7 @@
 // call - To call any external functions
 // put - Similar to dispatch
 
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, all } from 'redux-saga/effects';
 import { firestore, convetCollectionSnapshotToMap } from '../../firebase/firebase';
 
 import { fetchCollectionSuccess, fetchCollectionsFailure } from './shop-actions'
@@ -46,4 +46,10 @@ export function* fetchCollectionAsync() {
 
 export function* fetchCollectionsStart() {
     yield takeLatest('FETCH_COLLECTION_START', fetchCollectionAsync)
+}
+
+export function* shopSagas() {
+    yield all([
+        call(fetchCollectionsStart),
+    ])
 }

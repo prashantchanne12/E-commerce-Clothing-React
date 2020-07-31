@@ -20,13 +20,23 @@ const UserReducer = (state = INIT_STATE, action) => {
             }
         }
 
-        case 'SIGNIN_FAILURE': {
+        case 'SIGN_OUT_SUCCESS': {
+            return {
+                ...state,
+                currentUser: null,
+                error: null
+            }
+        }
+
+        case 'SIGNIN_FAILURE':
+        case 'SIGN_OUT_FAILURE': {
             return {
                 ...state,
                 error: action.payload,
 
             }
         }
+
 
         default: {
             return state;

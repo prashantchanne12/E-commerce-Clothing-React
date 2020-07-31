@@ -11,7 +11,7 @@ export const emailSignInStart = (emailAndPassword) => ({
     payload: emailAndPassword,
 });
 
-// --------------- * -------------------
+// --------------- SignIn -------------------
 
 export const signInSuccess = (user) => ({
     type: 'SIGNIN_SUCCESS',
@@ -27,4 +27,19 @@ export const signInFailure = (errorMessage) => ({
 
 export const checkUserSession = () => ({
     type: 'CHECK_USER_SESSION'
-})
+});
+
+// -------------- Sign out --------------------
+
+export const signOutStart = () => ({
+    type: 'SIGN_OUT_START'
+});
+
+export const signOutSuccess = () => ({
+    type: 'SIGN_OUT_SUCCESS'
+});
+
+export const signOutFailure = (error) => ({
+    type: 'SIGN_OUT_FAILURE',
+    payload: error,
+});

@@ -4,6 +4,7 @@ import { createStructuredSelector } from "reselect";
 
 import { selectCartHidden } from "../../redux/cart/cart-selectors.js";
 import { selectCurrentUser } from "../../redux/user/user-selector.js";
+import { signOutStart } from "../../redux/user/user-actions";
 // Connect is a Higher Order Component (HOC) that lets us modify our component to have access to things related to redux
 // HOC are the functions that takes components are the arguments and returns you a souped up component
 import {
@@ -17,9 +18,8 @@ import CartIcon from "../cart-icon/cart-icon";
 import CartDropdown from "../cart-dropdown/cart-dropdown.jsx";
 
 import { ReactComponent as Logo } from "../../assets/crown.svg";
-import { auth } from "../../firebase/firebase.js";
 
-const Header = ({ currentUser, hidden }) => (
+const Header = ({ currentUser, hidden, signOutStart }) => (
   <HeaderContainer>
     <LogoContainer to="/">
       <Logo className="logo" />
@@ -28,7 +28,9 @@ const Header = ({ currentUser, hidden }) => (
       <OptionLink to="/shop">SHOP</OptionLink>
       <OptionLink to="/shop">CONTACT</OptionLink>
       {currentUser ? (
-        <OptionLink as='div' onClick={() => auth.signOut()}>SIGN OUT</OptionLink>
+        <OptionLink as="div" onClick={() => signOutStart()}>
+          SIGN OUT
+        </OptionLink>
       ) : (
         <OptionLink to="/signin">SIGN IN</OptionLink>
       )}
@@ -43,12 +45,12 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   hidden: selectCartHidden,
 });
-// const mapStateToProps = (state) => ({
-//   currentUser: selectCurrentUser(state),
-//   hidden: selectCartHidden(state),
-// });
 
-export default connect(mapStateToProps)(Header);
+const dispatchToProps = (dispatch) => ({
+  signOutStart: () => dispatch(signOutStart()),
+});
+
+export default connect(mapStateToProps, dispatchToProps)(Header);
 
 /*
 connect() return another function
