@@ -8,8 +8,6 @@ import { connect } from "react-redux";
 import { fetchCollectionsStart } from "../../redux/shop/shop-actions";
 
 const ShopPage = ({ match, fetchCollectionsStart }) => {
-  unsubscribeFromSnapshot = null;
-
   useEffect(() => {
     fetchCollectionsStart();
   }, [fetchCollectionsStart]);
