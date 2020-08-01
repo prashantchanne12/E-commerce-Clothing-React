@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -13,31 +13,28 @@ import SignInAndSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.jsx';
 import CheckoutPage from './pages/checkout/checkout.jsx';
 
 
-class App extends React.Component {
+const App = ({ checkUserSession, currentUser }) => {
 
-  componentDidMount() {
-    const { checkUserSession } = this.props;
+  useEffect(() => {
     checkUserSession();
-  }
+  }, [checkUserSession]);
 
-  render() {
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/shop' component={ShopPage} />
-          <Route exact path='/signin'
-            render={() =>
-              this.props.currentUser ? (<Redirect to='/' />) :
-                (<SignInAndSignUpPage />)
-            } />
-          <Route exact path='/checkout' component={CheckoutPage} />
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path='/' component={HomePage} />
+        <Route path='/shop' component={ShopPage} />
+        <Route exact path='/signin'
+          render={() =>
+            currentUser ? (<Redirect to='/' />) :
+              (<SignInAndSignUpPage />)
+          } />
+        <Route exact path='/checkout' component={CheckoutPage} />
 
-        </Switch>
-      </div>
-    );
-  }
+      </Switch>
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => ({
