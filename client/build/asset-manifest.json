@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.24afa852.chunk.css",
+    "main.js": "/static/js/main.c77cf554.chunk.js",
+    "main.js.map": "/static/js/main.c77cf554.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.6fee969f.js",
+    "runtime-main.js.map": "/static/js/runtime-main.6fee969f.js.map",
+    "static/js/2.6d744725.chunk.js": "/static/js/2.6d744725.chunk.js",
+    "static/js/2.6d744725.chunk.js.map": "/static/js/2.6d744725.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.93a33a8d5fab28dbc7cd9125ff548494.js": "/precache-manifest.93a33a8d5fab28dbc7cd9125ff548494.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.24afa852.chunk.css.map": "/static/css/main.24afa852.chunk.css.map",
+    "static/js/2.6d744725.chunk.js.LICENSE.txt": "/static/js/2.6d744725.chunk.js.LICENSE.txt",
+    "static/media/crown.ed28accb.svg": "/static/media/crown.ed28accb.svg",
+    "static/media/shopping-bag.30f07071.svg": "/static/media/shopping-bag.30f07071.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6fee969f.js",
+    "static/js/2.6d744725.chunk.js",
+    "static/css/main.24afa852.chunk.css",
+    "static/js/main.c77cf554.chunk.js"
+  ]
+}
