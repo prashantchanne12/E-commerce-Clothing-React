@@ -40,3 +40,15 @@
     font-size: 18px;
   }
 }
+
+@media screen and (max-width: 800px) {
+  .collection-item {
+    width: 40vw;
+  }
+
+  .custom-button {
+    font-size: 10px;
+    padding: 0;
+    display: block;
+  }
+}
