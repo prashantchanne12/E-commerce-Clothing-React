@@ -1,1 +1,3 @@
-# E-commerce-Clothing-React
+# E-commerce Clothing React App
+
+---
