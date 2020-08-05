@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -8,11 +8,16 @@ import { selectCurrentUser } from './redux/user/user-selector';
 import { GlobalStyle } from './global-styles';
 
 // import './App.css';
-import { HomePage } from './pages/hompage/homepage.jsx';
-import ShopPage from './pages/shop/shop.jsx'
 import Header from './components/header/header.jsx';
-import SignInAndSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.jsx';
-import CheckoutPage from './pages/checkout/checkout.jsx';
+
+import Spinner from './components/spinner/spinner-component';
+import ErrorBoundry from './components/error-boundry/error-boundry'
+// HomePage is lazy loaded
+// That means whenever application mounts for the first time it will get the chunk that represents only the HomePage.
+const HomePage = lazy(() => import('./pages/hompage/homepage'));
+const ShopPage = lazy(() => import('./pages/shop/shop'));
+const SignInAndSignUpPage = lazy(() => import('./pages/sign-in-sign-up/sign-in-sign-up'));
+const CheckoutPage = lazy(() => import('./pages/checkout/checkout'));
 
 
 const App = ({ checkUserSession, currentUser }) => {
@@ -21,20 +26,25 @@ const App = ({ checkUserSession, currentUser }) => {
     checkUserSession();
   }, [checkUserSession]);
 
+  // Suspense - allows you to wrap any part of your application that might be rendering asynchronous components . It actually meant to used with react lazy.
+
   return (
     <div>
       <GlobalStyle />
       <Header />
       <Switch>
-        <Route exact path='/' component={HomePage} />
-        <Route path='/shop' component={ShopPage} />
-        <Route exact path='/signin'
-          render={() =>
-            currentUser ? (<Redirect to='/' />) :
-              (<SignInAndSignUpPage />)
-          } />
-        <Route exact path='/checkout' component={CheckoutPage} />
-
+        <ErrorBoundry>
+          <Suspense fallback={<Spinner />}>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/shop' component={ShopPage} />
+            <Route exact path='/signin'
+              render={() =>
+                currentUser ? (<Redirect to='/' />) :
+                  (<SignInAndSignUpPage />)
+              } />
+            <Route exact path='/checkout' component={CheckoutPage} />
+          </Suspense>
+        </ErrorBoundry>
       </Switch>
     </div>
   );

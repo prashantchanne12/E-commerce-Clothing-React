@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { selectIsCollectionFetching } from "../../redux/shop/shop-selectors";
 import { compose } from "redux";
-import WithSpinner from "../spinner/spinner";
+import WithSpinner from "../with-spinner/spinner";
 import CollectionsOverview from "./collection-overview";
 
 const mapStateToProps = (state) => ({

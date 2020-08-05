@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { isCollectionLoaded } from "../../redux/shop/shop-selectors";
-import WithSpinner from "../../components/spinner/spinner";
+import WithSpinner from "../../components/with-spinner/spinner";
 import CollectionPage from "../collection/collection";
 
 const mapStateToProps = (state) => ({
