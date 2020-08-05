@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const compression = require('compression');
 
 if (process.env.NODE_ENV != 'production') require('dotenv').config();
 
@@ -14,6 +15,7 @@ const app = express();
 // process port will be assigned by Heroku or any server
 const port = process.env.PORT || 5000;
 
+app.use(compression);
 app.use(bodyParser.json()); // convert to json
 app.use(bodyParser.urlencoded({ extended: true })); // encoding URLs. ex: URLs which contains spaces, symbols will escaped
 
