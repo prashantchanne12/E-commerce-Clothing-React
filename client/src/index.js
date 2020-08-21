@@ -8,6 +8,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { store, persistor } from './redux/store.js';
 
+import * as serviceWorker from './serviceWorker';
+
 // persistor - is the persisted version of store
 
 ReactDOM.render(
@@ -20,5 +22,7 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+
+serviceWorker.register();
 
 // Provider is a component and is the parent of every component in our applications

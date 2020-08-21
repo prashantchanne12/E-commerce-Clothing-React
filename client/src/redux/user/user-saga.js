@@ -76,7 +76,7 @@ export function* signInAfterSignUp({ payload: { user, additionalData } }) {
     yield getSnapshotFromUserAuth(user, additionalData);
 }
 
-
+ex
 export function* onGoogleSignInStart() {
     yield takeLatest('GOOGLE_SIGNIN_START', signInWithGoogle);
 }
